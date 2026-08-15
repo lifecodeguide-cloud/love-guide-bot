@@ -275,12 +275,13 @@ dp = Dispatcher(storage=MemoryStorage())
 
 @dp.message(CommandStart())
 async def start(message: Message, state: FSMContext):
-        if message.text and message.text.startswith("/start other_pair"):
-            await state.clear()
-            await message.answer(FIRST_NAME_TEXT)
-            await state.set_state(LoveGuideStates.first_name)
-            return
-        if message.text and message.text.startswith("/start paid_"):
+    if message.text and message.text.startswith("/start other_pair"):
+        await state.clear()
+        await message.answer(FIRST_NAME_TEXT)
+        await state.set_state(LoveGuideStates.first_name)
+        return
+
+    if message.text and message.text.startswith("/start paid_"):
         paid_user_id = message.text.replace("/start paid_", "", 1).strip()
 
         if paid_user_id == str(message.from_user.id):
@@ -298,8 +299,7 @@ async def start(message: Message, state: FSMContext):
     await state.clear()
     await message.answer(WELCOME_TEXT)
     await state.set_state(LoveGuideStates.first_name)
-
-
+    
 @dp.message(LoveGuideStates.first_name)
 async def get_first_name(message: Message, state: FSMContext):
     name = message.text.strip()
