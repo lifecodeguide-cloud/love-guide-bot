@@ -68,7 +68,7 @@ FIRST_PROFILE_BUTTON_TEXT = "💕 Как проявляет любовь пар�
 
 FIRST_NAME_TEXT = "👇 Введите имя первого человека"
 PAYMENT_SUCCESS_TEXT = "✅ Оплата прошла успешно."
-SHARE_TEXT = "Нажмите кнопку ниже, чтобы поделиться ботом и забрать подарок 👇"
+SHARE_TEXT = "Нажмите кнопку нижеили ссылку, чтобы поделиться ботом и забрать подарок 👇"
 
 GIFT_PDF_LINK = (
     "https://drive.google.com/file/d/"
@@ -289,6 +289,12 @@ async def start(message: Message, state: FSMContext):
             )
             return
 
+    if message.text == "/start other_pair":
+        await state.clear()
+        await message.answer(FIRST_NAME_TEXT)
+        await state.set_state(LoveGuideStates.first_name)
+        return
+    
     await state.clear()
     await message.answer(WELCOME_TEXT)
     await state.set_state(LoveGuideStates.first_name)
@@ -630,15 +636,23 @@ async def finish_analysis(callback: CallbackQuery):
     f"text={quote('💕 Попробуйте Love Guide')}"
 )
 
-    await callback.message.answer(FINAL_THANKS_TEXT, parse_mode="HTML")
+    final_text = FINAL_THANKS_TEXT.replace(
+    "💕 Рассчитать совместимость другой пары.",
+    f'💕 <a href="https://t.me/{bot_info.username}?start=other_pair">Рассчитать совместимость другой пары</a>.'
+)
 
+    await callback.message.answer(final_text, parse_mode="HTML")
+
+    await asyncio.sleep(5)
+    
     await callback.message.answer(
     f"{SHARE_TEXT}\n\n"
-    f"🔗 Или скопируйте ссылку и отправьте её в любом мессенджере:\n\n"
     f"{bot_link}",
     reply_markup=final_buttons(share_link),
 )
 
+    await asyncio.sleep(5)
+    
     await callback.message.answer(
     """💞 Если вы уже в отношениях, возвращайтесь к этому разбору в моменты непонимания или конфликтов.
 
