@@ -111,9 +111,8 @@ FINAL_THANKS_TEXT = """
 
 💞 Рассчитать совместимость другой пары.
 
-✨ Узнать, что скрывает ваша дата рождения — Life Guide  <a href="https://t.me/LifeGuideVitaBot">Life Guide</a>.
+✨ Узнать, что скрывает ваша дата рождения —  <a href="https://t.me/LifeGuideVitaBot">Life Guide</a>.
 
-👇 Поделиться ботом и забрать подарок
 """
 
 
