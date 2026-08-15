@@ -624,7 +624,7 @@ async def finish_analysis(callback: CallbackQuery):
 
     await callback.message.answer(
     f"{SHARE_TEXT}\n\n"
-    f"🔗 Или скопируйте ссылку и отправьте её в любом мессенджере:\n\n"
+    f"🔗 Или ссылкой в любом мессенджере:\n\n"
     f"{bot_link}",
     reply_markup=final_buttons(share_link),
 )
