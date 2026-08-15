@@ -135,7 +135,6 @@ def build_first_profile_text(data):
     expression1 = data["expression1"]
 
     return (
-        f"❤️ Как вы проявляете любовь\n"
         f"{name1}\n"
         f"{LOVE_PROFILE_TEXTS[expression1]}"
     )
