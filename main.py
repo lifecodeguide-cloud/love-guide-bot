@@ -275,7 +275,12 @@ dp = Dispatcher(storage=MemoryStorage())
 
 @dp.message(CommandStart())
 async def start(message: Message, state: FSMContext):
-    if message.text and message.text.startswith("/start paid_"):
+        if message.text and message.text.startswith("/start other_pair"):
+            await state.clear()
+            await message.answer(FIRST_NAME_TEXT)
+            await state.set_state(LoveGuideStates.first_name)
+            return
+        if message.text and message.text.startswith("/start paid_"):
         paid_user_id = message.text.replace("/start paid_", "", 1).strip()
 
         if paid_user_id == str(message.from_user.id):
@@ -620,7 +625,12 @@ async def finish_analysis(callback: CallbackQuery):
     f"text={quote('💕 Попробуйте Love Guide')}"
 )
 
-    await callback.message.answer(FINAL_THANKS_TEXT, parse_mode="HTML")
+    final_text = FINAL_THANKS_TEXT.replace(
+    "💕 Рассчитать совместимость другой пары.",
+    f'💕 <a href="https://t.me/{bot_info.username}?start=other_pair">Рассчитать совместимость другой пары</a>.'
+)
+
+    await callback.message.answer(final_text, parse_mode="HTML")
 
     await callback.message.answer(
     f"{SHARE_TEXT}\n\n"
