@@ -404,8 +404,18 @@ async def confirm_data(callback: CallbackQuery, state: FSMContext):
     )
 
     await callback.message.answer(ANALYZING_TEXT)
-    await callback.message.answer(EXPRESSION_INTRO_TEXT)
-    await asyncio.sleep(7)
+
+    await callback.message.answer(
+        EXPRESSION_INTRO_TEXT,
+        reply_markup=one_button(
+            "❤️ Как вы проявляете любовь",
+            "show_first_profile",
+        ),
+    )
+
+    await callback.answer()
+@dp.callback_query(F.data == "show_first_profile")
+async def show_first_profile(callback: CallbackQuery, state: FSMContext):
     data = await state.get_data()
 
     await callback.message.answer(
@@ -417,8 +427,6 @@ async def confirm_data(callback: CallbackQuery, state: FSMContext):
     )
 
     await callback.answer()
-
-
 @dp.callback_query(F.data == "show_second_profile")
 async def show_second_profile(callback: CallbackQuery, state: FSMContext):
     data = await state.get_data()
