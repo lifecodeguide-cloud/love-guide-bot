@@ -68,7 +68,7 @@ FIRST_PROFILE_BUTTON_TEXT = "💕 Как проявляет любовь пар�
 
 FIRST_NAME_TEXT = "👇 Введите имя первого человека"
 PAYMENT_SUCCESS_TEXT = "✅ Оплата прошла успешно."
-SHARE_TEXT = "Нажмите кнопку или ссылку ниже, чтобы поделиться и забрать подарок 👇"
+SHARE_TEXT = "Нажмите кнопку ниже, чтобы поделиться ботом и забрать подарок 👇"
 
 GIFT_PDF_LINK = (
     "https://drive.google.com/file/d/"
@@ -275,12 +275,6 @@ dp = Dispatcher(storage=MemoryStorage())
 
 @dp.message(CommandStart())
 async def start(message: Message, state: FSMContext):
-    if message.text and message.text.startswith("/start other_pair"):
-        await state.clear()
-        await message.answer(FIRST_NAME_TEXT)
-        await state.set_state(LoveGuideStates.first_name)
-        return
-
     if message.text and message.text.startswith("/start paid_"):
         paid_user_id = message.text.replace("/start paid_", "", 1).strip()
 
@@ -299,7 +293,8 @@ async def start(message: Message, state: FSMContext):
     await state.clear()
     await message.answer(WELCOME_TEXT)
     await state.set_state(LoveGuideStates.first_name)
-    
+
+
 @dp.message(LoveGuideStates.first_name)
 async def get_first_name(message: Message, state: FSMContext):
     name = message.text.strip()
@@ -404,18 +399,8 @@ async def confirm_data(callback: CallbackQuery, state: FSMContext):
     )
 
     await callback.message.answer(ANALYZING_TEXT)
+    await callback.message.answer(EXPRESSION_INTRO_TEXT)
 
-    await callback.message.answer(
-        EXPRESSION_INTRO_TEXT,
-        reply_markup=one_button(
-            "❤️ Как вы проявляете любовь",
-            "show_first_profile",
-        ),
-    )
-
-    await callback.answer()
-@dp.callback_query(F.data == "show_first_profile")
-async def show_first_profile(callback: CallbackQuery, state: FSMContext):
     data = await state.get_data()
 
     await callback.message.answer(
@@ -427,6 +412,8 @@ async def show_first_profile(callback: CallbackQuery, state: FSMContext):
     )
 
     await callback.answer()
+
+
 @dp.callback_query(F.data == "show_second_profile")
 async def show_second_profile(callback: CallbackQuery, state: FSMContext):
     data = await state.get_data()
@@ -622,7 +609,6 @@ async def important(callback: CallbackQuery):
     await callback.answer() 
 
 
-
 @dp.callback_query(F.data == "finish_analysis")
 async def finish_analysis(callback: CallbackQuery):
     bot_info = await bot.get_me()
@@ -633,20 +619,14 @@ async def finish_analysis(callback: CallbackQuery):
     f"text={quote('💕 Попробуйте Love Guide')}"
 )
 
-    final_text = FINAL_THANKS_TEXT.replace(
-    "💕 Рассчитать совместимость другой пары.",
-    f'💕 <a href="https://t.me/{bot_info.username}?start=other_pair">Рассчитать совместимость другой пары</a>.'
-)
-
-    await callback.message.answer(final_text, parse_mode="HTML")
+    await callback.message.answer(FINAL_THANKS_TEXT, parse_mode="HTML")
 
     await callback.message.answer(
     f"{SHARE_TEXT}\n\n"
-    f"🔗 Или ссылкой в любом мессенджере:\n\n"
+    f"🔗 Или скопируйте ссылку и отправьте её в любом мессенджере:\n\n"
     f"{bot_link}",
     reply_markup=final_buttons(share_link),
 )
-
 
     await callback.message.answer(
     """💞 Если вы уже в отношениях, возвращайтесь к этому разбору в моменты непонимания или конфликтов.
@@ -657,7 +637,6 @@ async def finish_analysis(callback: CallbackQuery):
     )
 
     await callback.answer()
-
 
 
 @dp.callback_query(F.data == "gift_pdf")
