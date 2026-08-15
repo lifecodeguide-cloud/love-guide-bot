@@ -68,7 +68,7 @@ FIRST_PROFILE_BUTTON_TEXT = "💕 Как проявляет любовь пар�
 
 FIRST_NAME_TEXT = "👇 Введите имя первого человека"
 PAYMENT_SUCCESS_TEXT = "✅ Оплата прошла успешно."
-SHARE_TEXT = "Нажмите кнопку ниже, чтобы поделиться ботом и забрать подарок 👇"
+SHARE_TEXT = "Нажмите кнопку или ссылку ниже, чтобы поделиться и забрать подарок 👇"
 
 GIFT_PDF_LINK = (
     "https://drive.google.com/file/d/"
@@ -405,7 +405,7 @@ async def confirm_data(callback: CallbackQuery, state: FSMContext):
 
     await callback.message.answer(ANALYZING_TEXT)
     await callback.message.answer(EXPRESSION_INTRO_TEXT)
-
+    await asyncio.sleep(7)
     data = await state.get_data()
 
     await callback.message.answer(
