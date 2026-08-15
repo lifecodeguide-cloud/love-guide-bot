@@ -68,7 +68,7 @@ FIRST_PROFILE_BUTTON_TEXT = "💕 Как проявляет любовь пар�
 
 FIRST_NAME_TEXT = "👇 Введите имя первого человека"
 PAYMENT_SUCCESS_TEXT = "✅ Оплата прошла успешно."
-SHARE_TEXT = "Нажмите кнопку нижеили ссылку, чтобы поделиться ботом и забрать подарок 👇"
+SHARE_TEXT = "Нажмите кнопку или ссылку, чтобы поделиться ботом и забрать подарок 👇"
 
 GIFT_PDF_LINK = (
     "https://drive.google.com/file/d/"
@@ -637,13 +637,13 @@ async def finish_analysis(callback: CallbackQuery):
 )
 
     final_text = FINAL_THANKS_TEXT.replace(
-    "💕 Рассчитать совместимость другой пары.",
-    f'💕 <a href="https://t.me/{bot_info.username}?start=other_pair">Рассчитать совместимость другой пары</a>.'
+    "Рассчитать совместимость другой пары",
+    f'<a href="https://t.me/{bot_info.username}?start=other_pair">Рассчитать совместимость другой пары</a>'
 )
 
     await callback.message.answer(final_text, parse_mode="HTML")
 
-    await asyncio.sleep(5)
+    await asyncio.sleep(7)
     
     await callback.message.answer(
     f"{SHARE_TEXT}\n\n"
@@ -651,7 +651,7 @@ async def finish_analysis(callback: CallbackQuery):
     reply_markup=final_buttons(share_link),
 )
 
-    await asyncio.sleep(5)
+    await asyncio.sleep(7)
     
     await callback.message.answer(
     """💞 Если вы уже в отношениях, возвращайтесь к этому разбору в моменты непонимания или конфликтов.
